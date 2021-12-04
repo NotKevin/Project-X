@@ -17,7 +17,7 @@ const UserProfilePage: NextPage = () => {
   const router = useRouter();
   const { uid } = router.query;
 
-  const [user, setUser] = React.useState<User>();
+  const [user, setUser] = React.useState<User | null>({} as User);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isCurrentUser, setIsCurrentUser] = React.useState(false);
   const [errorCheckingCurrentUser, setErrorCheckingCurrentUser] = React.useState(false);
@@ -32,6 +32,7 @@ const UserProfilePage: NextPage = () => {
           setUser(data);
         } catch {
           setErrorMessage('User could not be found');
+          setUser(null);
         }
       } else {
         setErrorMessage('User id malformed');
@@ -67,7 +68,7 @@ const UserProfilePage: NextPage = () => {
     checkUser();
   }, [user]);
 
-  if (user === undefined) {
+  if (!user) {
     if (errorMessage == '') return null;
     else
       return (

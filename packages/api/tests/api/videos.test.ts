@@ -58,6 +58,16 @@ describe('/videos', () => {
     // logger should be called
     expect(loggerSpy).toBeCalledTimes(1);
   });
+
+  it('propererly errors with a 400 and logs when given a bad query', async () => {
+    const handler = testHandler(videos);
+
+    // result responds with 400 Status
+    const { text } = await handler.get('/').query({q: {someObject: 1}}).expect(400);
+
+    // result contains all videos
+    expect(text).toEqual('query must be string');
+  });
 });
 
 describe('/videos/:videoId', () => {
@@ -98,4 +108,5 @@ describe('/videos/:videoId', () => {
 
     expect(loggerSpy).toBeCalledTimes(1);
   });
+  
 });

@@ -50,6 +50,7 @@ export const contributionPoll = async (entityManager: EntityManager<PostgreSqlDr
             type: 'Pull Request',
             description: contribution.title,
             contributedAt: new Date(Date.parse(contribution.mergedAt)),
+            url: contribution.permalink,
             score: 100,
           });
           entityManager.persist(newContribution);

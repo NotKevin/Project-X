@@ -20,6 +20,7 @@ export const buildPullRequestQuery = (
             title
             permalink
             mergedAt
+            permalink
             author {
               login
             }

@@ -40,7 +40,7 @@ describe('videos page', () => {
   });
 
   it('renders', async () => {
-    fetchMock.get('/api/videos', []);
+    fetchMock.get('/api/videos?q=', []);
 
     expect(() => render(<Videos />)).not.toThrow();
 
@@ -51,7 +51,7 @@ describe('videos page', () => {
   });
 
   it('renders the table properly when no videos are returned', async () => {
-    fetchMock.get('/api/videos', []);
+    fetchMock.get('/api/videos?q=', []);
 
     expect(() => render(<Videos />)).not.toThrow();
 
@@ -65,7 +65,7 @@ describe('videos page', () => {
   });
 
   it('renders the table properly when videos are returned', async () => {
-    fetchMock.get('/api/videos', [video1, video2]);
+    fetchMock.get('/api/videos?q=', [video1, video2]);
 
     expect(() => render(<Videos />)).not.toThrow();
 

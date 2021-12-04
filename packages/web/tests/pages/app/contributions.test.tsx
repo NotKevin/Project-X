@@ -44,18 +44,20 @@ describe('contribution page', () => {
   });
 
   it('renders the table properly when no contributions are present', async () => {
-    fetchMock.get(`/api/contributions`, []);
+    fetchMock.getOnce('/api/users/me', {id: '1'});
+    fetchMock.mock().getOnce(`/api/contributions?userId=1`, []);
 
     expect(() => render(<Contributions />)).not.toThrow();
 
     // Wait for fetch
     await waitFor(() => {
       expect(ContributionsBox).toBeCalledTimes(0);
-      expect(screen.getByText('No Projects Found')).toBeVisible();
+      expect(screen.getByText('No Contributions Found')).toBeVisible();
     });
   });
   it('renders the table properly when contributions are returned', async () => {
-    fetchMock.mock().getOnce(`/api/contributions`, [contributionList]);
+    fetchMock.getOnce('/api/users/me', {id: '1'});
+    fetchMock.mock().getOnce(`/api/contributions?userId=1`, [contributionList]);
     expect(() => render(<Contributions />)).not.toThrow();
 
     // Wait for fetch

@@ -33,7 +33,22 @@ describe('web /user/', () => {
     jest.clearAllMocks();
   });
 
-  it('outputs error given non-numeric or no uid', async () => {
+  it('displays only the AppLayout given no uid', async () => {
+    useRouter.mockImplementation(() => ({
+      query: { uid: undefined },
+    }));
+
+    fetchMock.getOnce('/api/users/abc', 400);
+    fetchMock.getOnce('/api/users/me', 401);
+
+    expect(() => render(<UserProfilePage />)).not.toThrow();
+
+    await waitFor(() => {
+      expect(UserProfile).toBeCalledTimes(0);
+    });
+  });
+
+  it('outputs error given non-numeric', async () => {
     useRouter.mockImplementation(() => ({
       query: { uid: 'abc' },
     }));

@@ -11,7 +11,8 @@ jest.mock('../../../src/components/Layout/AppLayout.tsx');
 getMock(AppLayout).mockImplementation(({ children }) => <>{children}</>);
 
 jest.mock('../../../src/components/Contributions/ContributionsBox.tsx');
-getMock(ContributionsBox).mockImplementation(() => <p>Box Row</p>);
+let key = -1;
+getMock(ContributionsBox).mockImplementation(() => <p key={key += 1}>Box Row</p>);
 
 const contributionList: Contribution[] = [
   {

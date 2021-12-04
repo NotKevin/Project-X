@@ -11,7 +11,7 @@ export const contributionPoll = async (entityManager: EntityManager<PostgreSqlDr
   try {
     const upperBoundDate = DateTime.now();
 
-    const lastCheckedThreshold = upperBoundDate.minus({ hours: 0 });
+    const lastCheckedThreshold = upperBoundDate.minus({ hours: 6 });
 
     const userList = await entityManager.find(User, {
       contributionsLastCheckedAt: { $lt: lastCheckedThreshold.toJSDate() },

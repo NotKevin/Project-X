@@ -77,4 +77,5 @@ describe('videos page', () => {
 
     expect(screen.getAllByText('Video Row').length).toEqual(2);
   });
+
 });

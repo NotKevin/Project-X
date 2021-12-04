@@ -101,7 +101,7 @@ describe('web /user/', () => {
       expect(UserProfile).toBeCalledTimes(1);
       expect(
         screen.getByText(
-          'An error has occurred checking the currently logged in user. Please try again later.',
+          'An error occurred getting the current user. Please try again.',
         ),
       );
     });

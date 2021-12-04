@@ -17,7 +17,7 @@ const UserProfilePage: NextPage = () => {
   const router = useRouter();
   const { uid } = router.query;
 
-  const [user, setUser] = React.useState<User | null>({} as User);
+  const [user, setUser] = React.useState<User>();
   const [errorMessage, setErrorMessage] = React.useState('');
   const [isCurrentUser, setIsCurrentUser] = React.useState(false);
   const [errorCheckingCurrentUser, setErrorCheckingCurrentUser] = React.useState(false);
@@ -32,10 +32,10 @@ const UserProfilePage: NextPage = () => {
           setUser(data);
         } catch {
           setErrorMessage('User could not be found');
-          setUser(null);
         }
       } else {
-        setErrorMessage('User id malformed');
+        if (uid)
+          setErrorMessage('User id malformed');
       }
     };
 
@@ -57,41 +57,34 @@ const UserProfilePage: NextPage = () => {
         // If an error was thrown inside the users/me api route
         else if (res.status == 500) {
           setErrorCheckingCurrentUser(true);
+          setUser(undefined);
           setErrorMessage('An error occurred getting the current user. Please try again.');
         }
       } catch {
         setErrorCheckingCurrentUser(true);
-        setErrorMessage('An error occurred getting the current user. Please try again.');
+        setUser(undefined);
+        setErrorMessage('An error has occurred checking the currently logged in user. Please try again later.');
       }
     };
 
     checkUser();
   }, [user]);
 
-  if (!user) {
-    if (errorMessage == '') return null;
-    else
-      return (
-        <AppLayout>
+  return (
+    <AppLayout>
+      {(user ? (
+          <UserProfile isCurrentUser={isCurrentUser} setUser={setUser} user={user} />
+        )
+       : (errorMessage ?
+        (
           <Alert status="error">
             <AlertIcon />
             {errorMessage}
           </Alert>
-        </AppLayout>
-      );
-  } else {
-    return (
-      <AppLayout>
-        {errorCheckingCurrentUser ? (
-          <Alert status="error">
-            <AlertIcon />
-            An error has occurred checking the currently logged in user. Please try again later.
-          </Alert>
-        ) : undefined}
-        <UserProfile isCurrentUser={isCurrentUser} setUser={setUser} user={user} />
-      </AppLayout>
-    );
-  }
+        ) : null
+       ))}
+    </AppLayout>
+  );
 };
 
 export default UserProfilePage;

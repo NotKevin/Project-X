@@ -14,27 +14,21 @@ export interface Contribution {
   url: string;
 }
 
-
-
 const Contributions: NextPage = () => {
   const [contributions, setContributions] = React.useState<Contribution[]>([]);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [errorCheckingCurrentUser, setErrorCheckingCurrentUser] = React.useState(false);
 
-  
-
   React.useEffect(() => {
     const getCurrentUserId = async () => {
       try {
         const res = await fetch('/api/users/me');
-  
+
         if (res.ok) {
           const data = await res.json();
-  
-          return data.id
-        }
-        else if(res.status == 401)
-        {
+
+          return data.id;
+        } else if (res.status == 401) {
           setErrorCheckingCurrentUser(true);
           setErrorMessage('You must be logged in to view your contributions.');
         }
@@ -52,21 +46,17 @@ const Contributions: NextPage = () => {
     const fetchContributions = async () => {
       // Get all Contributions
       const userId = await getCurrentUserId();
-      if (userId)
-      {
+      if (userId) {
         const res = await fetch(`/api/contributions?userId=${userId}`);
         const contributionsList = await res.json();
 
-      // Set contribution list
-      setContributions(contributionsList);
+        // Set contribution list
+        setContributions(contributionsList);
       }
     };
 
     fetchContributions();
   }, []);
-
-
-    
 
   return (
     <AppLayout>
@@ -77,8 +67,8 @@ const Contributions: NextPage = () => {
         <Stack>
           {errorCheckingCurrentUser ? (
             <Alert status="error">
-            <AlertIcon />
-            {errorMessage}
+              <AlertIcon />
+              {errorMessage}
             </Alert>
           ) : (
             <Text>No Contributions Found</Text>

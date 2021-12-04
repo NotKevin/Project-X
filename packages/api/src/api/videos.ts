@@ -4,17 +4,18 @@ import logger from '../logger';
 
 export const videos = Router();
 
-videos.get('', async (req, res) => { 
+videos.get('', async (req, res) => {
   const query = req.query.q || '';
-  if(typeof query !== 'string'){
+  if (typeof query !== 'string') {
     res.status(400).send('query must be string');
     return;
   }
   try {
-    const videosList = await req.entityManager.find(Video, { title: {
-      $ilike: `%${query.trim()}%`,
-    }
-  });
+    const videosList = await req.entityManager.find(Video, {
+      title: {
+        $ilike: `%${query.trim()}%`,
+      },
+    });
 
     res.status(200).send(videosList);
   } catch (error) {
@@ -22,7 +23,6 @@ videos.get('', async (req, res) => {
     res.status(500).send('There was an issue geting all videos');
   }
 });
-
 
 videos.get('/:videoId', async (req, res) => {
   const { videoId } = req.params;

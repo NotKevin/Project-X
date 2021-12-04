@@ -10,12 +10,10 @@ export interface ContributionsBoxProps {
     contributedAt: Date;
     description: string | null;
     url: string;
-  }
+  };
 }
 
-export const ContributionsBox: React.FC<ContributionsBoxProps> = ({
-  contribution
-}) => {
+export const ContributionsBox: React.FC<ContributionsBoxProps> = ({ contribution }) => {
   return (
     <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={contribution.id}>
       <Box p="6">

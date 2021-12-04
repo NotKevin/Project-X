@@ -11,11 +11,11 @@ jest.mock('../../../src/components/Layout/AppLayout.tsx');
 getMock(AppLayout).mockImplementation(({ children }) => <>{children}</>);
 
 jest.mock('../../../src/components/Contributions/ContributionsBox.tsx');
-getMock(ContributionsBox).mockImplementation(({contribution}) => <p>Box Row</p>);
+getMock(ContributionsBox).mockImplementation(({ contribution }) => <p>Box Row</p>);
 
 const mockCurrentUser = {
   id: 1,
-}
+};
 
 const contributionList: Contribution[] = [
   {
@@ -48,7 +48,7 @@ describe('contribution page', () => {
   });
 
   it('renders an error message when /api/users/me returns status 401 (user not logged in)', async () => {
-    fetchMock.get('/api/users/me', 401)
+    fetchMock.get('/api/users/me', 401);
     fetchMock.get(`/api/contributions?userId=${mockCurrentUser.id}`, []);
 
     expect(() => render(<Contributions />)).not.toThrow();
@@ -61,7 +61,7 @@ describe('contribution page', () => {
   });
 
   it('renders an error message when /api/users/me returns status 500', async () => {
-    fetchMock.get('/api/users/me', 500)
+    fetchMock.get('/api/users/me', 500);
     fetchMock.get(`/api/contributions?userId=${mockCurrentUser.id}`, []);
 
     expect(() => render(<Contributions />)).not.toThrow();
@@ -69,7 +69,9 @@ describe('contribution page', () => {
     // Wait for fetch
     await waitFor(() => {
       expect(ContributionsBox).toBeCalledTimes(0);
-      expect(screen.getByText('An error occurred getting your contributions. Please try again.')).toBeVisible();
+      expect(
+        screen.getByText('An error occurred getting your contributions. Please try again.'),
+      ).toBeVisible();
     });
   });
 
@@ -84,12 +86,14 @@ describe('contribution page', () => {
     // Wait for fetch
     await waitFor(() => {
       expect(ContributionsBox).toBeCalledTimes(0);
-      expect(screen.getByText('An error occurred getting your contributions. Please try again.')).toBeVisible();
+      expect(
+        screen.getByText('An error occurred getting your contributions. Please try again.'),
+      ).toBeVisible();
     });
   });
 
   it('renders the table properly when no contributions are present', async () => {
-    fetchMock.get('/api/users/me', mockCurrentUser)
+    fetchMock.get('/api/users/me', mockCurrentUser);
     fetchMock.get(`/api/contributions?userId=${mockCurrentUser.id}`, []);
 
     expect(() => render(<Contributions />)).not.toThrow();
@@ -102,7 +106,7 @@ describe('contribution page', () => {
   });
 
   it('renders the table properly when contributions are returned', async () => {
-    fetchMock.get('/api/users/me', mockCurrentUser)
+    fetchMock.get('/api/users/me', mockCurrentUser);
     fetchMock.mock().getOnce(`/api/contributions?userId=${mockCurrentUser.id}`, contributionList);
     expect(() => render(<Contributions />)).not.toThrow();
 

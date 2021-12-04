@@ -63,7 +63,10 @@ describe('/videos', () => {
     const handler = testHandler(videos);
 
     // result responds with 400 Status
-    const { text } = await handler.get('/').query({q: {someObject: 1}}).expect(400);
+    const { text } = await handler
+      .get('/')
+      .query({ q: { someObject: 1 } })
+      .expect(400);
 
     // result contains all videos
     expect(text).toEqual('query must be string');
@@ -108,5 +111,4 @@ describe('/videos/:videoId', () => {
 
     expect(loggerSpy).toBeCalledTimes(1);
   });
-  
 });

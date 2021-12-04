@@ -1,4 +1,15 @@
-import { Heading, Table, Thead, Tr, Th, Tbody, Text, Input, Button, HStack } from '@chakra-ui/react';
+import {
+  Heading,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Text,
+  Input,
+  Button,
+  HStack,
+} from '@chakra-ui/react';
 import { NextPage } from 'next';
 import React, { ChangeEventHandler } from 'react';
 import { AppLayout } from '../../components/Layout';
@@ -19,24 +30,32 @@ const Videos: NextPage = () => {
 
   React.useEffect(() => {
     const fetchVideos = async () => {
-      // Get videos 
+      // Get videos
       const res = await fetch(`/api/videos?q=${searchQuery}`);
       const videosList = await res.json();
 
       // Set page status
-      if(currentSearchQuery.current===searchQuery){
-        setVideos(videosList);        
+      if (currentSearchQuery.current === searchQuery) {
+        setVideos(videosList);
       }
     };
 
     fetchVideos();
   }, [searchQuery]);
-  
+
   return (
     <AppLayout>
       <HStack>
-        <Heading flex={1} >Videos</Heading>
-        <Input id="searchQuery" placeholder="Search videos" width='300px' value={searchQuery} type="text" autoComplete="off" onChange={(event) => setSearchQuery(event.target.value)} />
+        <Heading flex={1}>Videos</Heading>
+        <Input
+          id="searchQuery"
+          placeholder="Search videos"
+          width="300px"
+          value={searchQuery}
+          type="text"
+          autoComplete="off"
+          onChange={(event) => setSearchQuery(event.target.value)}
+        />
       </HStack>
       {videos.length <= 0 ? (
         <Text>No Videos Found</Text>

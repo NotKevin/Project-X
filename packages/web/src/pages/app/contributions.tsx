@@ -36,7 +36,7 @@ const Contributions: NextPage = () => {
         <Heading>Contributions</Heading>
       </VStack>
       {contributions.length <= 0 ? (
-        <Text>No Projects Found</Text>
+        <Text>No Contributions Found</Text>
       ) : (
         <SimpleGrid padding="4px" minChildWidth="250px" spacing="15px">
           {contributions.map((contribution) => (

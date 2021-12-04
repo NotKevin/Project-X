@@ -10,13 +10,13 @@ type TestRequestHandler = RequestHandler<ParamsDictionary, any, any, ParsedQs, R
 type MockEntityManager = jest.Mocked<
   Pick<
     EntityManager<PostgreSqlDriver>,
-    'find' | 'findOne' | 'persist' | 'flush' | 'persistAndFlush'
+    'find' | 'findOne' | 'persist' | 'flush' | 'persistAndFlush' | 'count'
   >
 >;
 
 type SuperTestWithEntityManager = SuperTest<Test> & { entityManager: MockEntityManager };
 
-const createTestApp = (handler: TestRequestHandler, middleware?: Handler) => {
+const createTestApp = (handler?: TestRequestHandler, middleware?: Handler) => {
   // If additional methods are needed, add them here and to the `MockEntityManager` type
   const entityManager: MockEntityManager = {
     find: jest.fn(),
@@ -24,6 +24,7 @@ const createTestApp = (handler: TestRequestHandler, middleware?: Handler) => {
     persist: jest.fn(),
     flush: jest.fn(),
     persistAndFlush: jest.fn(),
+    count: jest.fn(),
   };
 
   const app = express();
@@ -36,13 +37,16 @@ const createTestApp = (handler: TestRequestHandler, middleware?: Handler) => {
     req.entityManager = entityManager as unknown as EntityManager<PostgreSqlDriver>;
     next();
   });
-  app.use(handler);
+
+  if (handler) {
+    app.use(handler);
+  }
 
   return { app, entityManager };
 };
 
 export const testHandler = (
-  handler: TestRequestHandler,
+  handler?: TestRequestHandler,
   middleware?: Handler,
 ): SuperTestWithEntityManager => {
   const { app, entityManager } = createTestApp(handler, middleware);

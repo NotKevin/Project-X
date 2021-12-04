@@ -2,26 +2,22 @@ import React from 'react';
 import { Box, Link } from '@chakra-ui/react';
 
 export interface ContributionsBoxProps {
-  id: string;
-  nodeID: string;
-  type: string;
-  score: number;
-  contributedAt: Date;
-  description: string | null;
-  url: string;
+  contribution: {
+    id: string;
+    nodeID: string;
+    type: string;
+    score: number;
+    contributedAt: Date;
+    description: string | null;
+    url: string;
+  }
 }
 
 export const ContributionsBox: React.FC<ContributionsBoxProps> = ({
-  id,
-  nodeID,
-  type,
-  score,
-  contributedAt,
-  description,
-  url,
+  contribution
 }) => {
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={id}>
+    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" key={contribution.id}>
       <Box p="6">
         <Box
           color="gray.500"
@@ -30,7 +26,7 @@ export const ContributionsBox: React.FC<ContributionsBoxProps> = ({
           fontSize="xs"
           textTransform="uppercase"
         >
-          {type}
+          {contribution.type}
         </Box>
 
         <Box
@@ -42,13 +38,13 @@ export const ContributionsBox: React.FC<ContributionsBoxProps> = ({
           isTruncated
           color="cyan.500"
         >
-          <Link href={url} isExternal>
-            {description}
+          <Link href={contribution.url} isExternal>
+            {contribution.description}
           </Link>
         </Box>
-        <Box mt="1">Score: {score}</Box>
+        <Box mt="1">Score: {contribution.score}</Box>
         <Box mt="1" color="gray" fontSize="xs">
-          {contributedAt.toString().slice(0, 10)}
+          {contribution.contributedAt.toString().slice(0, 10)}
         </Box>
       </Box>
     </Box>

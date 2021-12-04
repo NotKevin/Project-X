@@ -15,7 +15,7 @@ const mockContribution: Contribution = {
 
 describe('Contributions Box', () => {
   it('renders', async () => {
-    render(<ContributionsBox {...mockContribution} />);
+    render(<ContributionsBox contribution={mockContribution} />);
 
     expect(screen.getByText('clist1')).toBeVisible();
   });

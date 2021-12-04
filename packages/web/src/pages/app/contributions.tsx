@@ -81,7 +81,7 @@ const Contributions: NextPage = () => {
       ) : (
         <SimpleGrid padding="4px" minChildWidth="250px" spacing="15px">
           {contributions.map((contribution) => (
-            <ContributionsBox key={contribution.id} {...contribution} />
+            <ContributionsBox key={contribution.id} contribution={contribution} />
           ))}
         </SimpleGrid>
       )}

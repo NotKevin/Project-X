@@ -1,11 +1,12 @@
 import React from 'react';
 import fetchMock from 'fetch-mock-jest';
-import { render, screen, act } from '../../testUtils/testTools';
+import { render, screen, act, waitFor } from '../../testUtils/testTools';
 import Videos from '../../../src/pages/app/videos';
 import { Video } from '../../../src/pages/app/videos';
 import { getMock } from '../../testUtils/getMock';
 import { AppLayout } from '../../../src/components/Layout';
 import { VideoTableRow } from '../../../src/components/Videos';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../src/components/Layout/AppLayout.tsx');
 getMock(AppLayout).mockImplementation(({ children }) => <>{children}</>);
@@ -78,4 +79,24 @@ describe('videos page', () => {
     expect(screen.getAllByText('Video Row').length).toEqual(2);
   });
 
+  it('renders the table properly when videos are returned', async () => {
+    fetchMock.getOnce('/api/videos?q=', [video1, video2]);
+    fetchMock.getOnce('/api/videos?q=a', [video1]);
+
+    expect(() => render(<Videos />)).not.toThrow();
+
+    const input = screen.getByPlaceholderText('Search videos');
+    userEvent.type(input, 'a');
+
+    // Wait for fetch
+    await waitFor(() => {
+        expect(screen.getAllByText('Video Row').length).toEqual(1);
+      }
+    )
+
+    expect(screen.getByText('Title')).toBeVisible();
+    expect(screen.getByText('Duration')).toBeVisible();
+
+    
+  });
 });

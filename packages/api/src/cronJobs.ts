@@ -51,6 +51,7 @@ export const contributionPoll = async (entityManager: EntityManager<PostgreSqlDr
             description: contribution.title,
             contributedAt: new Date(Date.parse(contribution.mergedAt)),
             score: 100,
+            author: user,
           });
           entityManager.persist(newContribution);
         }

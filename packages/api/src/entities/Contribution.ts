@@ -1,7 +1,8 @@
 /* istanbul ignore file */
-import { Entity, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 import { ConstructorValues } from '../utils/types';
 import { Node } from './Node';
+import { User } from './User';
 
 export type ContributionConstructorValues = ConstructorValues<Contribution>;
 
@@ -9,6 +10,9 @@ export type ContributionConstructorValues = ConstructorValues<Contribution>;
 export class Contribution extends Node<Contribution> {
   @Property({ columnType: 'text', unique: true })
   nodeID: string;
+
+  @ManyToOne(() => User)
+  author: User;
 
   @Property({ columnType: 'text' })
   authorGithubId: string;
@@ -32,6 +36,7 @@ export class Contribution extends Node<Contribution> {
     type,
     score,
     contributedAt,
+    author,
     ...extraValues
   }: ContributionConstructorValues) {
     super(extraValues);
@@ -41,5 +46,6 @@ export class Contribution extends Node<Contribution> {
     this.type = type;
     this.score = score;
     this.contributedAt = contributedAt;
+    this.author = author;
   }
 }

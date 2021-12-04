@@ -1,9 +1,10 @@
 /* istanbul ignore file */
-import { Entity, Property } from '@mikro-orm/core';
+import { Entity, IdentifiedReference, OneToMany, Property } from '@mikro-orm/core';
 import { ConstructorValues } from '../utils/types';
+import { Contribution } from './Contribution';
 import { Node } from './Node';
 
-export type UserConstructorValues = ConstructorValues<User, never, 'isAdmin'>;
+export type UserConstructorValues = ConstructorValues<User, never, 'isAdmin' | 'contributionList'>;
 
 @Entity()
 export class User extends Node<User> {
@@ -49,6 +50,9 @@ export class User extends Node<User> {
   @Property({ columnType: 'timestamp' })
   contributionsLastCheckedAt: Date;
 
+  @OneToMany({ entity: () => Contribution, mappedBy: 'author' })
+  contributionList: IdentifiedReference<Contribution>[];
+
   constructor({
     name,
     githubId,
@@ -70,5 +74,6 @@ export class User extends Node<User> {
     this.isAdmin = isAdmin ?? false;
     this.email = email;
     this.contributionsLastCheckedAt = contributionsLastCheckedAt;
+    this.contributionList = [];
   }
 }

@@ -22,6 +22,16 @@ const mockSignedInUser: Express.User = {
   githubToken: 'abcd123',
 };
 
+const sampleContribution1: Partial<Contribution> = {
+  id: '1',
+  author: mockUser as User,
+};
+
+const sampleContribution2: Partial<Contribution> = {
+  id: '2',
+  author: mockUser as User,
+};
+
 function returnMockQueriedUserContributions(): Partial<Contribution>[] {
   const mockQueriedUserContributions: Partial<Contribution>[] = [
     {
@@ -122,6 +132,24 @@ describe('Contributions API GET route', () => {
     const { body } = await handler.get('').expect(200);
     expect(body).toEqual(mockUser.contributionList);
     expect(handler.entityManager.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it('successfully deletes authors from the returned contributions', async () => {
+    const handler = testHandler(contributions, (req, _res, next) => {
+      req.user = mockSignedInUser;
+      req.query = { userId: mockUser.id };
+      next();
+    });
+
+    const expectedBody = [{ id: sampleContribution1.id }, { id: sampleContribution2.id }];
+
+    handler.entityManager.findOne.mockResolvedValueOnce({
+      ...mockUser,
+      contributionList: [sampleContribution1, sampleContribution2],
+    });
+
+    const { body } = await handler.get('').expect(200);
+    expect(body).toEqual(expectedBody);
   });
 
   it('returns a 401 error when no logged in user', async () => {

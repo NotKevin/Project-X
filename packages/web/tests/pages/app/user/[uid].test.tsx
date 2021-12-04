@@ -99,11 +99,7 @@ describe('web /user/', () => {
 
     await waitFor(() => {
       expect(UserProfile).toBeCalledTimes(1);
-      expect(
-        screen.getByText(
-          'An error occurred getting the current user. Please try again.',
-        ),
-      );
+      expect(screen.getByText('An error occurred getting the current user. Please try again.'));
     });
   });
 

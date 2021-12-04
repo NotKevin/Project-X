@@ -34,8 +34,7 @@ const UserProfilePage: NextPage = () => {
           setErrorMessage('User could not be found');
         }
       } else {
-        if (uid)
-          setErrorMessage('User id malformed');
+        if (uid) setErrorMessage('User id malformed');
       }
     };
 
@@ -63,7 +62,9 @@ const UserProfilePage: NextPage = () => {
       } catch {
         setErrorCheckingCurrentUser(true);
         setUser(undefined);
-        setErrorMessage('An error has occurred checking the currently logged in user. Please try again later.');
+        setErrorMessage(
+          'An error has occurred checking the currently logged in user. Please try again later.',
+        );
       }
     };
 
@@ -72,17 +73,14 @@ const UserProfilePage: NextPage = () => {
 
   return (
     <AppLayout>
-      {(user ? (
-          <UserProfile isCurrentUser={isCurrentUser} setUser={setUser} user={user} />
-        )
-       : (errorMessage ?
-        (
-          <Alert status="error">
-            <AlertIcon />
-            {errorMessage}
-          </Alert>
-        ) : null
-       ))}
+      {user ? (
+        <UserProfile isCurrentUser={isCurrentUser} setUser={setUser} user={user} />
+      ) : errorMessage ? (
+        <Alert status="error">
+          <AlertIcon />
+          {errorMessage}
+        </Alert>
+      ) : null}
     </AppLayout>
   );
 };

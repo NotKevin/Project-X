@@ -79,7 +79,7 @@ describe('videos page', () => {
     expect(screen.getAllByText('Video Row').length).toEqual(2);
   });
 
-  it('renders the table properly when videos are returned', async () => {
+  it('updates the videos list when the search input changes', async () => {
     fetchMock.getOnce('/api/videos?q=', [video1, video2]);
     fetchMock.getOnce('/api/videos?q=a', [video1]);
 
@@ -93,10 +93,7 @@ describe('videos page', () => {
         expect(screen.getAllByText('Video Row').length).toEqual(1);
       }
     )
-
     expect(screen.getByText('Title')).toBeVisible();
     expect(screen.getByText('Duration')).toBeVisible();
-
-    
   });
 });

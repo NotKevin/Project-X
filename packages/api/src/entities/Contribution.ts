@@ -15,9 +15,6 @@ export class Contribution extends Node<Contribution> {
   author: User;
 
   @Property({ columnType: 'text' })
-  authorGithubId: string;
-
-  @Property({ columnType: 'text' })
   description: string;
 
   @Property({ columnType: 'text' })
@@ -31,7 +28,6 @@ export class Contribution extends Node<Contribution> {
 
   constructor({
     nodeID,
-    authorGithubId,
     description,
     type,
     score,
@@ -41,7 +37,6 @@ export class Contribution extends Node<Contribution> {
   }: ContributionConstructorValues) {
     super(extraValues);
     this.nodeID = nodeID;
-    this.authorGithubId = authorGithubId;
     this.description = description;
     this.type = type;
     this.score = score;

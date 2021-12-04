@@ -11,7 +11,7 @@ export const contributionPoll = async (entityManager: EntityManager<PostgreSqlDr
   try {
     const upperBoundDate = DateTime.now();
 
-    const lastCheckedThreshold = upperBoundDate.minus({ hours: 6 });
+    const lastCheckedThreshold = upperBoundDate.minus({ hours: 0 });
 
     const userList = await entityManager.find(User, {
       contributionsLastCheckedAt: { $lt: lastCheckedThreshold.toJSDate() },
@@ -46,12 +46,11 @@ export const contributionPoll = async (entityManager: EntityManager<PostgreSqlDr
         if (user) {
           const newContribution = new Contribution({
             nodeID: contribution.id,
-            authorGithubId: user.githubId,
+            author: user,
             type: 'Pull Request',
             description: contribution.title,
             contributedAt: new Date(Date.parse(contribution.mergedAt)),
             score: 100,
-            author: user,
           });
           entityManager.persist(newContribution);
         }

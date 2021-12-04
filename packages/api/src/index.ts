@@ -138,7 +138,7 @@ void (async () => {
       logger.info(`🚀 Listening at http://localhost:${port}`);
 
       const contributionPollCronJob = new CronJob(
-        '0 0,6,12,18 * * *',
+        '8 * * * *',
         () => contributionPoll(orm.em.fork()),
         null,
         false,
